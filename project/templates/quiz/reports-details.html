@@ -1,0 +1,286 @@
+{% load static%}
+{% load test_tags %}
+<!DOCTYPE html>
+<html data-navigation-type="default" data-navbar-horizontal-shape="default" lang="en-US" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- ===============================================-->
+    <!--    Document Title-->
+    <!-- ===============================================-->
+    <title>تحلیل نتیجه آزمون</title>
+
+    <!-- ===============================================-->
+    <!--    Favicons-->
+    <!-- ===============================================-->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'assets2/img/favicons/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'assets2/img/favicons/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'assets2/img/favicons/favicon-16x16.png' %}">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'assets2/img/favicons/favicon.ico' %}">
+    <link rel="manifest" href="{% static 'assets2/img/favicons/manifest.json' %}">
+    <meta name="msapplication-TileImage" content="{% static 'assets2/img/favicons/mstile-150x150.png' %}">
+    <meta name="theme-color" content="#ffffff">
+    <script src="{% static 'vendors/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+    <script src="{% static 'vendors/simplebar/simplebar.min.js' %}"></script>
+    <script src="{% static 'assets2/js/config.js' %}"></script>
+
+    <!-- ===============================================-->
+    <!--    Stylesheets-->
+    <!-- ===============================================-->
+    <link href="{% static 'vendors/dropzone/dropzone.min.css' %}" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300;400;600;700;800;900&amp;display=swap" rel="stylesheet">
+    <link href="{% static 'vendors/simplebar/simplebar.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
+    <link href="{% static 'assets2/css/theme-rtl.min.css' %}" type="text/css" rel="stylesheet" id="style-rtl">
+    <link href="{% static 'assets2/css/theme.min.css' %}" type="text/css" rel="stylesheet" id="style-default">
+    <link href="{% static 'assets2/css/user-rtl.min.css' %}" type="text/css" rel="stylesheet" id="user-style-rtl">
+    <link href="{% static 'assets2/css/user.min.css' %}" type="text/css" rel="stylesheet" id="user-style-default">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <script>
+      var phoenixIsRTL = true;
+      if (phoenixIsRTL) {
+        var linkDefault = document.getElementById('style-default');
+        var userLinkDefault = document.getElementById('user-style-default');
+        linkDefault.setAttribute('disabled', true);
+        userLinkDefault.setAttribute('disabled', true);
+        document.querySelector('html').setAttribute('dir', 'rtl');
+      } else {
+        var linkRTL = document.getElementById('style-rtl');
+        var userLinkRTL = document.getElementById('user-style-rtl');
+        linkRTL.setAttribute('disabled', true);
+        userLinkRTL.setAttribute('disabled', true);
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- ===============================================-->
+    <!--    Main Content-->
+    <!-- ===============================================-->
+    <main class="main" id="top">
+      <nav class="navbar navbar-top fixed-top navbar-expand" id="navbarDefault" style="display:none;">
+        <div class="collapse navbar-collapse justify-content-between">
+            <ul class="navbar-nav navbar-nav-icons flex-row ">
+                <li class="nav-item">
+                  <a href=" {% url 'quiz:index' %}" class="active" style="font-family: Vazirmatn;font-weight: 700;">صفحه اصلی</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'quiz:single' qid=1 %}" style="font-family: Vazirmatn;font-weight: 400;">آزمون</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'account:logout' %}" style="font-family: Vazirmatn;font-weight: 400;">خروج</a>
+                </li>
+                {% else %}
+                <li class=" nav-item">
+                    <a class="nav-link" href="{% url 'account:login' %}" style="font-family: Vazirmatn;font-weight: 400;">ورود به آزمون</a>
+                </li>
+                {% endif %}
+              </ul>
+        </div>
+      </nav>
+
+      <script>
+        var navbarTopShape = 'default';
+        var navbarPosition = window.config.config.phoenixNavbarPosition;
+        var body = document.querySelector('body');
+        var navbarDefault = document.querySelector('#navbarDefault');
+
+        var documentElement = document.documentElement;
+        var navbarVertical = document.querySelector('.navbar-vertical');
+
+        if (navbarTopShape === 'default' && navbarPosition === 'horizontal') {
+          navbarDefault.remove();
+          document.documentElement.setAttribute('data-navigation-type', 'horizontal');
+        }  else {
+          navbarDefault.removeAttribute('style');
+          navbarVertical.removeAttribute('style');
+        }
+
+        var navbarTopStyle = window.config.config.phoenixNavbarTopStyle;
+        var navbarTop = document.querySelector('.navbar-top');
+        if (navbarTopStyle === 'darker') {
+          navbarTop.setAttribute('data-navbar-appearance', 'darker');
+        }
+
+        var navbarVerticalStyle = window.config.config.phoenixNavbarVerticalStyle;
+        var navbarVertical = document.querySelector('.navbar-vertical');
+        if (navbarVerticalStyle === 'darker') {
+          navbarVertical.setAttribute('data-navbar-appearance', 'darker');
+        }
+      </script>
+      <div class="content">
+        <div class="pb-9">
+          <div>
+            <div id="content-to-pdf">
+              <div class="card col-sm-5 mx-auto"> <!-- استفاده از col-sm-8 برای کوچک‌تر کردن کارت -->
+                <div class="card-header" style="display: flex; justify-content: center;">
+                  <h4 style="font-family: Vazirmatn; font-size: medium;font-weight: 200;">نتیجه آزمون <a style="font-family: Vazirmatn; font-size: medium;font-weight: 600;">{{ user_test_result.test.title }}</a></h4>              
+                </div>
+                
+                <div class="card-body">
+                  <div style="display: flex; justify-content: space-between; align-items: center;">                
+                    <h6 style="font-family: Vazirmatn;font-weight: 200;">کاربر: <a style="font-family: Vazirmatn;font-weight: 600;">{{ user_test_result.user.username }}</a></h6>
+                    <h6 style="font-family: Vazirmatn;font-weight: 200;">تاریخ:<a style="font-family: Vazirmatn;font-weight: 400;"> {{ user_test_result.completed_at|date:"DATE_FORMAT" }}</a></h6>
+                  </div>
+                  <!-- <div class="echart-reports-details mb-5" style="height:358px; width:100%" ></div> -->
+                  <div class="mb-5" style="width:100%; display: flex; justify-content: center; align-items: center;"><canvas id="myChart"></canvas></div>
+                  <div class="table-responsive scrollbar">
+                    <table class="reports-details-chart-table table table-sm fs-9 mb-0">
+                      <thead>
+                        <tr style="font-family: Vazir;">
+                          <th class="align-middle pe- text-body-tertiary fw-bold fs-10 text-uppercase text-nowrap" scope="col" style="width:35%;">دسته‌‌‌بندی</th>
+                          <th class="align-middle text-end ps-4 text-body-tertiary fw-bold fs-10 text-uppercase text-nowrap" scope="col" style="width:35%;" id="number">میانگین (از 60)</th>
+                          <th class="align-middle text-end ps-4 text-body-tertiary fw-bold fs-10 text-uppercase" scope="col" style="width:30%;">وضعیت</th>
+                        </tr>
+                      </thead>
+                      <tbody class="list" id="report-data-body">
+                        {% for category, data in analysis.items %}
+                        <tr class="hover-actions-trigger btn-reveal-trigger position-static">
+                          <td class="align-middle white-space-nowrap  py-2" style="font-family: Vazirmatn; font-weight: 700;">{{category}}</td>
+                          {% with average=category_averages|dict_get:category %}                          
+                          <td class="align-middle text-end white-space-nowrap fw-semibold text-body-highlight ps-4 py-2">{{ average }}</td>
+                          <td class="align-middle text-end white-space-nowrap ps-4 fw-semibold text-body-highlight">
+                            {% if average > data.category.normal_threshold %}
+                            <span class="badge badge-phoenix badge-phoenix-success" style="font-family: Vazirmatn;font-weight:500">طبیعی</span>
+                            {% elif average > data.category.monitoring_threshold %}
+                            <span class="badge badge-phoenix badge-phoenix-warning" style="font-family: Vazirmatn;font-weight:500">منطقه پایش</span>
+                            {% else %}
+                            <span class="badge badge-phoenix badge-phoenix-danger" style="font-family: Vazirmatn;font-weight:500">نیاز به ارجاع</span>                            
+                            {% endif %}
+                          </td>
+                        </tr>
+                        {% endwith %}                        
+                        {% endfor %}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: center; margin-bottom: 20px;">
+                  <button id="download-pdf" class="btn btn-primary" style="font-family: Vazirmatn;font-weight: 300;">دانلود نتیجه آزمون <span class="fas fa-download me-2"></span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <footer class="footer position-absolute">
+          <div class="row g-0 justify-content-between align-items-center h-100">
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 mt-2 mt-sm-0 text-body" style="font-family: Vazirmatn;">باتشکر از شما برای تست این نرم افزار<span class="d-none d-sm-inline-block"></span><span class="d-none d-sm-inline-block mx-1">|</span><br class="d-sm-none" /><a class="mx-1" href="https://heyweb.ir">لک لک کوچولو</a>&copy;2024</p>
+            </div>
+            <div class="col-12 col-sm-auto text-center">
+              <p class="mb-0 text-body-tertiary text-opacity-85">v1.0.0</p>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+    </main><!-- ===============================================-->
+    <!--    End of Main Content-->
+    <!-- ===============================================-->
+
+    <!-- ===============================================-->
+    <!--    JavaScripts-->
+    <!-- ===============================================-->
+    <script src="{% static 'vendors/popper/popper.min.js' %}"></script>
+    <script src="{% static 'vendors/bootstrap/bootstrap.min.js' %}"></script>
+    <script src="{% static 'vendors/anchorjs/anchor.min.js' %}"></script>
+    <script src="{% static 'vendors/is/is.min.js' %}"></script>
+    <script src="{% static 'vendors/fontawesome/all.min.js' %}"></script>
+    <!-- <script src="{% static 'vendors/lodash/lodash.min.js' %}"></script> -->
+    <!-- <script src="https://polyfill.io/v3/polyfill.min.js?features=window.scroll"></script> -->
+    <script src="{% static 'vendors/list.js/list.min.js' %}"></script>
+    <script src="{% static 'vendors/feather-icons/feather.min.js' %}"></script>
+    <!-- <script src="{% static 'vendors/dayjs/dayjs.min.js' %}"></script>
+    <script src="{% static 'vendors/dropzone/dropzone.min.js' %}"></script> -->
+    <!-- <script src="{% static 'vendors/echarts/echarts.min.js' %}"></script> -->
+    <script src="{% static 'assets2/js/phoenix.js' %}"></script>
+
+    <!-- افزودن jsPDF و html2canvas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script defer type="text/javascript">
+      var replaceDigits = function () {
+          var map = ["&#1776;", "&#1777;", "&#1778;", "&#1779;", "&#1780;", "&#1781;", "&#1782;", "&#1783;", "&#1784;", "&#1785;"];
+          var element = document.getElementById('number');
+          
+          if (element) {
+              element.innerHTML = element.innerHTML.replace(/\d/g, function (match) {
+                  return map[parseInt(match)];
+              });
+          }
+      }
+      
+      window.onload = replaceDigits;
+  </script>
+  
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+var ctx = document.getElementById('myChart').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: [{% for category, data in analysis.items %}'{{category}}',{% endfor %}],
+        datasets: [{
+            label: 'ستون‌های شاخص',
+            data: [{% for category, data in analysis.items %}{% with average=category_averages|dict_get:category %}  {{average}},{%endwith%}{% endfor %}],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 2
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                max:60,
+            }
+        }
+    }
+  });
+  </script>
+
+    <script>
+      document.getElementById('download-pdf').addEventListener('click', function () {
+        const { jsPDF } = window.jspdf;
+
+        html2canvas(document.querySelector('#content-to-pdf')).then(canvas => {
+          const imgData = canvas.toDataURL('image/png');
+          const pdf = new jsPDF({
+            orientation: 'portrait',
+            unit: 'pt',
+            format: 'a5'
+          });
+          const imgProps = pdf.getImageProperties(imgData);
+          const pdfWidth = pdf.internal.pageSize.getWidth();
+          const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+          pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+          pdf.save('report.pdf');
+        });
+      });
+    </script>
+  </body>
+
+</html>

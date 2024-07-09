@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="vh-100 d-flex justify-content-center align-items-center">
+    <div class="card shadow-sm bg-light" data-aos="{% if quiz.id == 1 %}zoom-in{% else %}fade-left{% endif %}"
+        data-aos-delay="200" style="border-radius: 10px; width:30rem; height: auto; flex-wrap:nowrap;">
+        <audio id="music">
+            <source src='{{ quiz.audio_file.url }}' type="audio/mp3">
+        </audio>
+        <img class="card-img-top" src="{{quiz.image.url}}" alt="Card image cap" style="
+        height: 18rem;
+        object-fit:cover;
+        border-top-right-radius: 10px;
+        border-top-left-radius: 10px;">
+        <button onclick="playAudio()" class="btn btn-primary" style="position: absolute;
+        right: 100%;
+        transform: translate(140%, 40%);
+        border-radius: 100%;" type="button"><i class="fa fa-play"></i>
+        </button>
+
+        <div class="card-header d-flex justify-content-center"
+            style="font-family: Vazirmatn; font-weight: 700; font-size: small; background-color: {{ category_color }}; -webkit-text-fill-color: #ffffff;">
+            {{ quiz.category }}
+        </div>
+
+
+        <div class="card-body d-flex btn-group-vertical text-right"
+            style="justify-content:space-between; font-family: Vazirmatn;">
+            <p class="card-text text-justify"
+                style="font-size:14px; font-family: Vazirmatn; font-weight: 500;border-radius: 0;">
+                {{quiz.content}}
+            </p>
+        </div>
+        <form method="post" id="quiz-form">
+            {% csrf_token %}
+            <div class="card-body d-flex justify-content-center btn-group-vertical gap-2"
+                style="display: flex; font-family: Vazirmatn; padding-top: 0;">
+                {% for choice in choices %}
+                <input type='submit' style="display: none;" type="radio" id="choice{{ choice.id }}" name="choice"
+                    value="{{ choice.id }}">
+                {% if choice == selected_choice %}
+                <label for="choice{{ choice.id }}" class="btn btn-outline-primary rounded-5 choice-btn active"
+                    style="background-color: {{ category_color }};">
+                    {{ choice.text }}
+                </label>
+                {% else %}
+                <label for="choice{{ choice.id }}" class="btn btn-outline-primary rounded-5 choice-btn">
+                    {{ choice.text }}
+                </label>
+                {% endif %}
+                {% endfor %}
+            </div>
+
+
+
+            <div class="card-body"
+                style="display: flex; justify-content: space-between;font-family: Vazirmatn; align-items:center;">
+                {% if next %}
+                <button onclick="submitAndNext({{ next.id }})" class="btn btn-primary" style="border-radius: 10px;">سوال
+                    بعدی</button>
+                {% endif %}
+                <a style="font-family: Vazirmatn;">سوال {{ number }} از {{ all_quiz }}</a>
+                {% if prev %}
+                <button onclick="submitAndPrev({{ number }})" class="btn btn-primary" style="border-radius: 10px;">سوال
+                    قبلی</button>
+                {% endif %}
+            </div>
+            {% if not next and selected_choice %}
+            <div class="card-body" style="display: flex; justify-content:center; font-family: Vazirmatn;">
+                <button onclick="submitAndNext()" class="btn btn-primary rounded-5"
+                    style="width: 15rem; border-radius: 10px;">دیدن نتایج</button>
+            </div>
+            {% endif %}
+        </form>
+
+    </div>
+</div>
+<script defer type="text/javascript">
+    var replaceDigits = function () {
+        var map = ["&\#1776;", "&\#1777;", "&\#1778;", "&\#1779;", "&\#1780;", "&\#1781;", "&\#1782;", "&\#1783;", "&\#1784;", "&\#1785;"];
+        document.body.innerHTML = document.body.innerHTML.replace(/\d(?=[^<>]*(<|$))/g, function ($0) { return map[$0]; });
+    }
+    window.onload = replaceDigits;
+</script>
+<script defer>
+    var audioT = document.getElementById("music");
+    function playAudio() {
+        audioT.play();
+    }
+</script>
+<script defer>
+    function submitAndNext(nextId) {
+        var form = document.getElementById('quiz-form');
+        if (nextId) {
+            form.action = "{% url 'quiz:single' qid=1 %}".replace('1', nextId);
+        } else {
+            form.action = "{% url 'quiz:result' result_id=user_test_result.id %}";
+        }
+        form.submit();
+    }
+
+    function submitAndPrev(prevId) {
+        var form = document.getElementById('quiz-form');
+        if (prevId) {
+            form.action = "{% url 'quiz:single' qid=1 %}".replace('1', prevId - 1);
+        }
+        form.submit();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const choiceBtns = document.querySelectorAll('.choice-btn');
+
+        choiceBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                choiceBtns.forEach(b => b.classList.remove('selected'));
+                btn.classList.add('selected');
+            });
+        });
+    });
+</script>
+
+{% endblock %}

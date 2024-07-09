@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content%}
+<section id="hero" class="hero section">
+
+    <div class="container">
+        <div class="row gy-4">
+            <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                <h1 style="font-family: Vazirmatn;" data-aos="fade-up">آزمون آنلاین ASQ-3
+                </h1>
+                <br>
+                <p style="font-family: Vazirmatn;font-weight: 200;" data-aos="fade-up" data-aos-delay="100">به اولین
+                    سامانه یکپارچه آزمون
+                    آنلاین ASQ-3 خوش آمدید.</p>
+                <div class="d-flex flex-column flex-md-row" data-aos="fade-up" data-aos-delay="400">
+                    <a href="{% url 'account:login'%}" class="btn-get-started"
+                        style="font-family: Vazirmatn; font-weight: 700;"> آغاز کنید <i class="bi bi-arrow-left"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out">
+                <img src="{% static 'assets/img/hero-img.png' %}" class="img-fluid animated" alt="">
+            </div>
+        </div>
+    </div>
+
+</section><!-- /Hero Section -->
+
+{% endblock %}

@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>آزمون آنلاین ASQ-3</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link disabled href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+    <link disabled href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+    <link disabled href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
+    <!-- =======================================================
+  * Template Name: FlexStart
+  * Template static: https://bootstrapmade.com/flexstart-bootstrap-startup-template/
+  * Updated: Jun 14 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+  
+</head>
+
+<body class="index-page" style="background-color: #009df2;">
+
+    <header id=" header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+
+
+            <nav id="navmenu" class="navmenu">
+                <ul class="navbar-nav navbar-nav-icons flex-row ">
+                    <li class="nav-item">
+                        <a href="{% url 'quiz:index' %}" class="active" style="font-family: Vazirmatn; font-weight: 700;">صفحه اصلی</a>
+                    </li>
+                    {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'quiz:single' qid=1 %}" style="font-family: Vazirmatn; font-weight: 400;">آزمون</a>
+                    </li>
+                    {% if all_questions_answered %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'quiz:result' result_id=user_test_result.id %}" style="font-family: Vazirmatn; font-weight: 400;">مشاهده نتیجه</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:logout' %}" style="font-family: Vazirmatn; font-weight: 400;">خروج</a>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'account:login' %}" style="font-family: Vazirmatn; font-weight: 400;">ورود به آزمون</a>
+                    </li>
+                    {% endif %}
+                </ul>                
+            </nav>
+                
+                
+                
+        </div>
+    </header>
+
+    <main class=" main">
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+    <!-- Vendor JS Files -->
+    <script defer src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script defer src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+    <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+    <script defer src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+    <script defer src="{% static 'assets/vendor/imagesloaded/imagesloaded.pkgd.min.js' %}"></script>
+    <script defer src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+    <script defer src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+    <!-- Main JS File -->
+    <script defer src="{% static 'assets/js/main.js' %}"></script>
+
+</body>
+
+</html>
+{% load sweetify %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+{% sweetify %}
