@@ -11,6 +11,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['heyweb.ir','www.heyweb.ir','127.0.0.1']
 # INSTALLED_APPS = [
 # ]
+AUTH_USER_MODEL = 'account.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

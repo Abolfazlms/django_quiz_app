@@ -1,13 +1,11 @@
-from django.shortcuts import render, redirect
+# account/views.py
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
-
-from account.models import CustomUser
-from .forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
+from .models import CustomUser
 import sweetify
-
 
 @csrf_exempt
 def login_view(request):
@@ -18,7 +16,6 @@ def login_view(request):
         username_or_phone = request.POST.get('username')
         password = request.POST.get('password')
 
-        # Check if the entered username_or_phone is a phone number
         try:
             user = CustomUser.objects.get(phone_number=username_or_phone)
             username = user.username
@@ -26,7 +23,6 @@ def login_view(request):
             username = username_or_phone
 
         user = authenticate(request, username=username, password=password)
-        print(user)
         if user is not None:
             login(request, user)
             sweetify.success(request, 'با موفقیت وارد شدید!', text='شما می‌توانید تست را انجام بدهید', type='success', timer=2000)
@@ -45,14 +41,14 @@ def logout_view(request):
 def signup_view(request):
     if not request.user.is_authenticated:
         if request.method == 'POST':
-            form = UserCreationForm(request.POST)
+            form = CustomUserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
                 sweetify.success(request, 'ثبت‌نام با موفقیت انجام شد', text='شما می‌توانید وارد حساب کاربری خود شوید.', type='success', timer=2000)
                 return redirect('account:login')
         else:
-            sweetify.error(request, 'لطفاً در ورود اطلاعات دقت کنید.', text='پسورد مناسبی انتخاب کنید', type='warning', timer=2000)
-            form = UserCreationForm()
+            sweetify.toast(request, type='success', title='راهنما', text='رمز عبور انتخابی باید حداقل دارای 8 کاراکتر باشد.', timer=4000)
+            form = CustomUserCreationForm()
 
         return render(request, 'accounts/signup.html', {'form': form})
     else:

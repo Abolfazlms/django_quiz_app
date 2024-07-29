@@ -1,16 +1,17 @@
+# account/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from .models import CustomUser
 
-class UserCreationForm(UserCreationForm):
-    phone_number = forms.CharField(max_length=20, required=True)
+class CustomUserCreationForm(UserCreationForm):
+    phone_number = forms.CharField(max_length=15, required=True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ("username", "phone_number", "password1", "password2")
 
     def save(self, commit=True):
-        user = super(UserCreationForm, self).save(commit=False)
+        user = super().save(commit=False)
         user.phone_number = self.cleaned_data["phone_number"]
         if commit:
             user.save()

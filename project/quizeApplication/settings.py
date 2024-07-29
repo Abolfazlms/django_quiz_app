@@ -32,7 +32,7 @@ INSTALLED_APPS = [
 
 #sweetify config
 SWEETIFY_SWEETALERT_LIBRARY = 'sweetalert2'
-
+AUTH_USER_MODEL = 'account.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
